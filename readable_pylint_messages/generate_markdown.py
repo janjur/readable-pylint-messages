@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """ generate_markdown docstring
 This module is complete tool for creating as eyepleasing as possible pylint messages
 with error codes and descriptions.
