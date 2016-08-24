@@ -1,1 +1,1 @@
-from .generate_markdown import main  # pylint: disable=unused-import
+from .generate_markdown import main  # pylint: disable=unused-import, missing-docstring
