@@ -50,6 +50,11 @@ def prepare_list_of_messages(matches):
 
 
 def get_pylint_version():
+    """
+    Get pylint version
+
+    :return: version number string
+    """
     output = check_output(['pylint', '--version'], stderr=PIPE).decode('utf-8')
     version = output[7:12]
 
