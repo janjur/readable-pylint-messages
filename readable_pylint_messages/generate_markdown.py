@@ -19,7 +19,7 @@ def pylint_list_msgs():
 def prepare_list_of_matches(pattern, text):
     """
     Convert string from pylint to tuples
-    
+
     :param pattern: regex pattern to compile
     :param text: text to check for msgs
     :return: list of formatted tuples each being msg
