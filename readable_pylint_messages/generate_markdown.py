@@ -3,8 +3,9 @@
 This module is complete tool for creating as eyepleasing as possible pylint messages
 with error codes and descriptions.
 """
-from subprocess import check_output, PIPE
 import re
+from shutil import move
+from subprocess import check_output, PIPE
 from readable_pylint_messages.Message import Message
 
 
@@ -48,6 +49,32 @@ def prepare_list_of_messages(matches):
     return messages
 
 
+def prepare_readme(messages):
+    """
+    Prepare markdown text
+
+    :param messages: list of Messages
+    :return: formatted markdown string
+    """
+    markdown = "# Readable pylint messages \n"
+    for message in messages:
+        markdown += "##{} \n".format(message.name)
+        markdown += "###{} - {} \n".format(message.code, message.brief)
+        markdown += "{} \n".format(message.description)
+    return markdown
+
+
+def save_to_readme(text):
+    """
+    Finally, paste generated text to readme
+
+    :param text: string
+    :return: None
+    """
+    with open('README.md','w') as readme:
+        readme.write(text)
+    move('README.md', '../README.md')
+
 def main():
     """
     Function handles generating whole README.md
@@ -57,7 +84,8 @@ def main():
     output = pylint_list_msgs()
     matches = prepare_list_of_matches(r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)", output)
     messaeges = prepare_list_of_messages(matches)
-    print(messaeges)
+    markdown = prepare_readme(messaeges)
+    save_to_readme(markdown)
 
 
 if __name__ == '__main__':
