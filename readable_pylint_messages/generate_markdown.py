@@ -59,7 +59,7 @@ def prepare_readme(messages):
     markdown = "# Readable pylint messages \n"
     for message in messages:
         markdown += "##{} \n".format(message.name)
-        markdown += "###{} - {} \n".format(message.code, message.brief)
+        markdown += "####{} - {} \n".format(message.code, message.brief)
         markdown += "{} \n".format(message.description)
     return markdown
 
