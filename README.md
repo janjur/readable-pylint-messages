@@ -1,4 +1,5 @@
 # Readable pylint messages 
+Prepared with `pylint --list-msgs` for pylint v1.6.4
 ##blacklisted-name 
 ####C0102 - Black listed name "%s" 
 Used when the name is listed in the black list (unauthorized names). 

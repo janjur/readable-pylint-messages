@@ -49,6 +49,13 @@ def prepare_list_of_messages(matches):
     return messages
 
 
+def get_pylint_version():
+    output = check_output(['pylint', '--version'], stderr=PIPE).decode('utf-8')
+    version = output[7:12]
+
+    return version
+
+
 def prepare_readme(messages):
     """
     Prepare markdown text
@@ -57,6 +64,7 @@ def prepare_readme(messages):
     :return: formatted markdown string
     """
     markdown = "# Readable pylint messages \n"
+    markdown += "Prepared with `pylint --list-msgs` for pylint v{}\n".format(get_pylint_version())
     for message in messages:
         markdown += "##{} \n".format(message.name)
         markdown += "####{} - {} \n".format(message.code, message.brief)
