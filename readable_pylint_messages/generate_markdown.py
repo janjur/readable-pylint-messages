@@ -71,9 +71,10 @@ def save_to_readme(text):
     :param text: string
     :return: None
     """
-    with open('README.md','w') as readme:
+    with open('README.md', 'w') as readme:
         readme.write(text)
     move('README.md', '../README.md')
+
 
 def main():
     """
@@ -82,7 +83,8 @@ def main():
     :return: exit code
     """
     output = pylint_list_msgs()
-    matches = prepare_list_of_matches(r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)", output)
+    re_string = r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)"
+    matches = prepare_list_of_matches(re_string, output)
     messaeges = prepare_list_of_messages(matches)
     markdown = prepare_readme(messaeges)
     save_to_readme(markdown)
