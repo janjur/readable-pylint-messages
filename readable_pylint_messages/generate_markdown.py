@@ -5,6 +5,7 @@ with error codes and descriptions.
 """
 from subprocess import check_output, PIPE
 import re
+from readable_pylint_messages.Message import Message
 
 
 def pylint_list_msgs():
@@ -32,15 +33,32 @@ def prepare_list_of_matches(pattern, text):
     return new_matches
 
 
+def prepare_list_of_messages(matches):
+    """
+    Converts tuples into Messages
+
+    :param matches: list of formatted tuples each being msg
+    :return: list of Messages
+    """
+    messages = []
+    for match in matches:
+        message = Message(*match)
+        messages.append(message)
+
+    return messages
+
+
 def main():
     """
     Function handles generating whole README.md
 
     :return: exit code
     """
-    msgs = pylint_list_msgs()
-    list_of_msgs = prepare_list_of_matches(r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)", msgs)
-    print(list_of_msgs)
+    output = pylint_list_msgs()
+    matches = prepare_list_of_matches(r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)", output)
+    messaeges = prepare_list_of_messages(matches)
+    print(messaeges)
+
 
 if __name__ == '__main__':
     main()
