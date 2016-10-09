@@ -96,7 +96,7 @@ def main():
     :return: exit code
     """
     output = pylint_list_msgs()
-    re_string = r":([\w-]+) \((\w+)\): \*([\w \"%]+)\*\n([\w ,\(\)'\n.]+)"
+    re_string = r":([\w-]+) \((\w+)\): \*([\w \-:_`#/\'\(\)\".,%]+)\*\n([\w /\;\-_+%*{}`>,\(\)'\"\=\n.]+)"
     matches = prepare_list_of_matches(re_string, output)
     messaeges = prepare_list_of_messages(matches)
     markdown = prepare_readme(messaeges)
