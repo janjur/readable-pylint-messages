@@ -25,7 +25,7 @@ def prepare_list_of_matches(text):
     :param text: text to check for msgs
     :return: list of formatted tuples each being msg
     """
-    messages = text.split('\n:')
+    messages = text[1:].split('\n:')
     new_messages = []
 
     for message in messages:
@@ -35,7 +35,7 @@ def prepare_list_of_matches(text):
         code = message[end_of_name + 2:end_of_code]
         end_of_brief = message.find('\n', end_of_code)
         brief = message[end_of_code + 4:end_of_brief - 1]
-        desc = ''.join([line.strip() for line in message[end_of_brief + 1:].splitlines()])
+        desc = ' '.join([line.strip() for line in message[end_of_brief + 1:].splitlines()])
         new_messages.append((name, code, brief, desc))
 
     return new_messages
