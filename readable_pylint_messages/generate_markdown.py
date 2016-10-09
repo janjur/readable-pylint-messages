@@ -3,7 +3,6 @@
 This module is complete tool for creating as eyepleasing as possible pylint messages
 with error codes and descriptions.
 """
-import re
 from shutil import move
 from subprocess import check_output, PIPE
 from readable_pylint_messages.Message import Message
@@ -18,7 +17,7 @@ def pylint_list_msgs():
     return check_output(['pylint', '--list-msgs'], stderr=PIPE).decode('utf-8')
 
 
-def prepare_list_of_matches(pattern, text):
+def prepare_list_of_matches(text):
     """
     Convert string from pylint to tuples
 
@@ -26,12 +25,20 @@ def prepare_list_of_matches(pattern, text):
     :param text: text to check for msgs
     :return: list of formatted tuples each being msg
     """
-    comp = re.compile(pattern)
-    matches = re.findall(comp, text)
-    new_matches = []
-    for match in matches:
-        new_matches.append((match[0], match[1], match[2], match[3].strip()))
-    return new_matches
+    messages = text.split('\n:')
+    new_messages = []
+
+    for message in messages:
+        end_of_name = message.find(' ')
+        name = message[:end_of_name]
+        end_of_code = message.find(')', end_of_name)
+        code = message[end_of_name + 2:end_of_code]
+        end_of_brief = message.find('\n', end_of_code)
+        brief = message[end_of_code + 4:end_of_brief - 1]
+        desc = ''.join([line.strip() for line in message[end_of_brief + 1:].splitlines()])
+        new_messages.append((name, code, brief, desc))
+
+    return new_messages
 
 
 def prepare_list_of_messages(matches):
@@ -96,8 +103,7 @@ def main():
     :return: exit code
     """
     output = pylint_list_msgs()
-    re_string = r":([\w-]+) \((\w+)\): \*([\w \-:_`#/\'\(\)\".,%]+)\*\n([\w /\;\-_+%*{}`>,\(\)'\"\=\n.]+)"
-    matches = prepare_list_of_matches(re_string, output)
+    matches = prepare_list_of_matches(output)
     messaeges = prepare_list_of_messages(matches)
     markdown = prepare_readme(messaeges)
     save_to_readme(markdown)
