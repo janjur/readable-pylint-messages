@@ -93,6 +93,9 @@ Used when imports are not grouped by packages
 ## wrong-import-position 
 #### C0413 - Import "%s" should be placed at the top of the module 
 Used when code and imports are mixed 
+## old-style-class 
+#### C1001 - Old-style class defined. 
+Used when a class is defined that does not inherit from anotherclass and does not inherit explicitly from "object". This message can't be emitted when using Python >= 3.0. 
 ## syntax-error 
 #### E0001 -  
 Used when a syntax error is raised for a module. 
@@ -120,6 +123,9 @@ Used when a "return" statement is found outside a function or method.
 ## yield-outside-function 
 #### E0105 - Yield outside function 
 Used when a "yield" statement is found outside a function or method. 
+## return-arg-in-generator 
+#### E0106 - Return with argument inside generator 
+Used when a "return" statement with an argument is found outside in a generator function or method (e.g. with some "yield" statements). This message can't be emitted when using Python >= 3.3. 
 ## nonexistent-operator 
 #### E0107 - Use of the non-existent %s operator 
 Used when you attempt to use the C-style pre-increment orpre-decrement operator -- and ++, which doesn't exist in Python. 
@@ -132,24 +138,9 @@ Used when an abstract class with `abc.ABCMeta` as metaclass has abstract methods
 ## bad-reversed-sequence 
 #### E0111 - The first reversed() argument is not a sequence 
 Used when the first argument to reversed() builtin isn't a sequence (does not implement __reversed__, nor __getitem__ and __len__ 
-## too-many-star-expressions 
-#### E0112 - More than one starred expression in assignment 
-Emitted when there are more than one starred expressions (`*x`) in an assignment. This is a SyntaxError. This message can't be emitted when using Python < 3.0. 
-## invalid-star-assignment-target 
-#### E0113 - Starred assignment target must be in a list or tuple 
-Emitted when a star expression is used as a starred assignment target. This message can't be emitted when using Python < 3.0. 
-## star-needs-assignment-target 
-#### E0114 - Can use starred expression only in assignment target 
-Emitted when a star expression is not used in an assignment target. This message can't be emitted when using Python < 3.0. 
-## nonlocal-and-global 
-#### E0115 - Name %r is nonlocal and global 
-Emitted when a name is both nonlocal and global. This message can't be emitted when using Python < 3.0. 
 ## continue-in-finally 
 #### E0116 - 'continue' not supported inside 'finally' clause 
 Emitted when the `continue` keyword is found inside a finally clause, which is a SyntaxError. 
-## nonlocal-without-binding 
-#### E0117 - nonlocal name %s found without binding 
-Emitted when a nonlocal variable does not have an attached name somewhere in the parent scopes This message can't be emitted when using Python < 3.0. 
 ## method-hidden 
 #### E0202 - An attribute defined in %s line %s hides this method 
 Used when a class defines a method which is hidden by an instance attribute from an ancestor class or set by some client code. 
@@ -182,7 +173,7 @@ Used when a class has an inconsistent method resolutin order.
 Used when a class has duplicate bases. 
 ## non-iterator-returned 
 #### E0301 - __iter__ returns non-iterator 
-Used when an __iter__ method returns something which is not an iterable (i.e. has no `__next__` method) 
+Used when an __iter__ method returns something which is not an iterable (i.e. has no `next` method) 
 ## unexpected-special-method-signature 
 #### E0302 - The special method %r expects %s param(s), %d %s given 
 Emitted when a special method was defined with an invalid number of parameters. If it has too few or too many, it might not work at all. 
@@ -219,9 +210,6 @@ Used when except clauses are not in the correct order (from the more specific to
 ## raising-bad-type 
 #### E0702 - Raising %s while only classes or instances are allowed 
 Used when something which is neither a class, an instance or a string is raised (i.e. a `TypeError` will be raised). 
-## bad-exception-context 
-#### E0703 - Exception context set to something which is not an exception, nor None 
-Used when using the syntax "raise ... from ...", where the exception context is not an exception, nor None. This message can't be emitted when using Python < 3.0. 
 ## misplaced-bare-raise 
 #### E0704 - The raise statement is not inside an except clause 
 Used when a bare raise is not used inside an except clause. This generates an error, since there are no active exceptions to be reraised. An exception to this rule is represented by a bare raise inside a finally clause, which might work, as long as an exception is raised inside the try block, but it is nevertheless a code smell that must not be relied upon. 
@@ -234,9 +222,18 @@ Used when NotImplemented is raised instead of NotImplementedError
 ## catching-non-exception 
 #### E0712 - Catching an exception which doesn't inherit from BaseException: %s 
 Used when a class which doesn't inherit from BaseException is used as an exception in an except clause. 
+## slots-on-old-class 
+#### E1001 - Use of __slots__ on an old style class 
+Used when an old style class uses the __slots__ attribute. This message can't be emitted when using Python >= 3.0. 
+## super-on-old-class 
+#### E1002 - Use of super on an old style class 
+Used when an old style class uses the super builtin. This message can't be emitted when using Python >= 3.0. 
 ## bad-super-call 
 #### E1003 - Bad first argument %r given to super() 
 Used when another argument than the current class is given as first argument of the super builtin. 
+## missing-super-argument 
+#### E1004 - Missing argument to super() 
+Used when the super builtin didn't receive an argument. This message can't be emitted when using Python >= 3.0. 
 ## no-member 
 #### E1101 - %s %r has no %r member 
 Used when a variable is accessed for an unexistent member. 
@@ -258,9 +255,6 @@ Used when a function call passes a keyword argument that doesn't correspond to o
 ## redundant-keyword-arg 
 #### E1124 - Argument %r passed by position and keyword in %s call 
 Used when a function call would result in assigning multiple values to a function parameter, one value from a positional argument and one from a keyword argument. 
-## missing-kwoa 
-#### E1125 - Missing mandatory keyword argument %r in %s call 
-Used when a function call does not pass a mandatory keyword-only argument. This message can't be emitted when using Python < 3.0. 
 ## invalid-sequence-index 
 #### E1126 - Sequence index is not an int, slice, or instance with __index__ 
 Used when a sequence type is indexed with an invalid type. Valid types are ints, slices, and objects with an __index__ method. 
@@ -330,12 +324,33 @@ Used when a format string that uses unnamed conversion specifiers is given too f
 ## bad-str-strip-call 
 #### E1310 - Suspicious argument in %s.%s call 
 The argument to a str.{l,r,}strip call contains a duplicate character, 
-## yield-inside-async-function 
-#### E1700 - Yield inside async function 
-Used when an `yield` or `yield from` statement is found inside an async function. This message can't be emitted when using Python < 3.5. 
-## not-async-context-manager 
-#### E1701 - Async context manager '%s' doesn't implement __aenter__ and __aexit__. 
-Used when an async context manager is used with an object that does not implement the async context management protocol. This message can't be emitted when using Python < 3.5. 
+## print-statement 
+#### E1601 - print statement used 
+Used when a print statement is used (`print` is a function in Python 3) This message can't be emitted when using Python >= 3.0. 
+## parameter-unpacking 
+#### E1602 - Parameter unpacking specified 
+Used when parameter unpacking is specified for a function(Python 3 doesn't allow it) This message can't be emitted when using Python >= 3.0. 
+## unpacking-in-except 
+#### E1603 - Implicit unpacking of exceptions is not supported in Python 3 
+Python3 will not allow implicit unpacking of exceptions in except clauses. See http://www.python.org/dev/peps/pep-3110/ This message can't be emitted when using Python >= 3.0. 
+## old-raise-syntax 
+#### E1604 - Use raise ErrorClass(args) instead of raise ErrorClass, args. 
+Used when the alternate raise syntax 'raise foo, bar' is used instead of 'raise foo(bar)'. This message can't be emitted when using Python >= 3.0. 
+## backtick 
+#### E1605 - Use of the `` operator 
+Used when the deprecated "``" (backtick) operator is used instead of the str() function. This message can't be emitted when using Python >= 3.0. 
+## long-suffix 
+#### E1606 - Use of long suffix 
+Used when "l" or "L" is used to mark a long integer. This will not work in Python 3, since `int` and `long` types have merged. This message can't be emitted when using Python >= 3.0. 
+## old-ne-operator 
+#### E1607 - Use of the <> operator 
+Used when the deprecated "<>" operator is used instead of "!=". This is removed in Python 3. This message can't be emitted when using Python >= 3.0. 
+## old-octal-literal 
+#### E1608 - Use of old octal literal 
+Usen when encountering the old octal syntax, removed in Python 3. To use the new syntax, prepend 0o on the number. This message can't be emitted when using Python >= 3.0. 
+## import-star-module-level 
+#### E1609 - Import * only allowed at module level 
+Used when the import star syntax is used somewhere else than the module level. This message can't be emitted when using Python >= 3.0. 
 ## fatal 
 #### F0001 -  
 Used when an error occurred preventing the analysis of a module (unable to find it for instance). 
@@ -450,6 +465,9 @@ Used when the body of a lambda expression is a function call on the same argumen
 ## duplicate-key 
 #### W0109 - Duplicate key %r in dictionary 
 Used when a dictionary expression binds the same key multiple times. 
+## deprecated-lambda 
+#### W0110 - map/filter on lambda could be replaced by comprehension 
+Used when a lambda is the first argument to "map" or "filter". It could be clearer as a list comprehension or generator expression. This message can't be emitted when using Python >= 3.0. 
 ## useless-else-on-loop 
 #### W0120 - Else clause on loop without a break statement 
 Loops should only have an else clause if they can exit early with a break statement, otherwise the statements under else should be on the same scope as the loop itself. 
@@ -507,12 +525,18 @@ Used when an unexpected number of indentation's tabulations or spaces has been f
 ## mixed-indentation 
 #### W0312 - Found indentation with %ss instead of %ss 
 Used when there are some mixed tabs and spaces in a module. 
+## lowercase-l-suffix 
+#### W0332 - Use of "l" as long integer identifier 
+Used when a lower case "l" is used to mark a long integer. You should use a upper case "L" since the letter "l" looks too much like the digit "1" This message can't be emitted when using Python >= 3.0. 
 ## wildcard-import 
 #### W0401 - Wildcard import %s 
 Used when `from module import *` is detected. 
 ## deprecated-module 
 #### W0402 - Uses of a deprecated module %r 
 Used a module marked as deprecated is imported. 
+## relative-import 
+#### W0403 - Relative import %r, should be %r 
+Used when an import relative to the package directory is detected. This message can't be emitted when using Python >= 3.0. 
 ## reimported 
 #### W0404 - Reimport %r (imported line %s) 
 Used when a module is reimported multiple times. 
@@ -525,6 +549,9 @@ Python 2.5 and greater require __future__ import to be the first non docstring s
 ## fixme 
 #### W0511 -  
 Used when a warning note as FIXME or XXX is detected. 
+## invalid-encoded-data 
+#### W0512 - Cannot decode using encoding "%s", unexpected byte at position %d 
+Used when a source line cannot be decoded using the specified source file encoding. This message can't be emitted when using Python >= 3.0. 
 ## global-variable-undefined 
 #### W0601 - Global variable %r undefined at the module level 
 Used when a variable is defined through the "global" statement but the variable is not defined in the module scope. 
@@ -573,9 +600,15 @@ Used when an except catches a too general exception, possibly burying unrelated 
 ## duplicate-except 
 #### W0705 - Catching previously caught exception type %s 
 Used when an except catches a type that was already caught by a previous handler. 
+## nonstandard-exception 
+#### W0710 - Exception doesn't inherit from standard "Exception" class 
+Used when a custom exception class is raised but doesn't inherit from the builtin "Exception" class. This message can't be emitted when using Python >= 3.0. 
 ## binary-op-exception 
 #### W0711 - Exception to catch is the result of a binary "%s" operation 
 Used when the exception to catch is of the form "except A or B:". If intending to catch multiple, rewrite as "except (A, B):" 
+## property-on-old-class 
+#### W1001 - Use of "property" on an old style class 
+Used when Pylint detect the use of the builtin "property" on an old style class while this is relying on new style classes features. This message can't be emitted when using Python >= 3.0. 
 ## logging-not-lazy 
 #### W1201 - Specify string format arguments as logging function parameters 
 Used when a logging statement has a call form of "logging.<logging method>(format_string % (format_args...))". Such calls should leave string interpolation to the logging method itself and be written "logging.<logging method>(format_string, format_args...)" so that the program may avoid incurring the cost of the interpolation in those cases in which no message will be logged. For more, see http://www.python.org/dev/peps/pep-0282/. 
@@ -615,9 +648,129 @@ Used when an escape like \u is encountered in a byte string where it has no effe
 ## bad-open-mode 
 #### W1501 - "%s" is not a valid mode for open. 
 Python supports: r, w, a[, x] modes with b, +, and U (only with r) options. See http://docs.python.org/2/library/functions.html#open 
+## boolean-datetime 
+#### W1502 - Using datetime.time in a boolean context. 
+Using datetime.time in a boolean context can hide subtle bugs when the time they represent matches midnight UTC. This behaviour was fixed in Python 3.5. See http://bugs.python.org/issue13936 for reference. This message can't be emitted when using Python >= 3.5. 
 ## redundant-unittest-assert 
 #### W1503 - Redundant use of %s with constant value %r 
 The first argument of assertTrue and assertFalse is a condition. If a constant is passed as parameter, that condition will be always true. In this case a warning should be emitted. 
 ## deprecated-method 
 #### W1505 - Using deprecated method %s() 
-The method is marked as deprecated and will be removed in a future version of Python. Consider looking for an alternative in the documentation.  
+The method is marked as deprecated and will be removed in a future version of Python. Consider looking for an alternative in the documentation. 
+## apply-builtin 
+#### W1601 - apply built-in referenced 
+Used when the apply built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## basestring-builtin 
+#### W1602 - basestring built-in referenced 
+Used when the basestring built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## buffer-builtin 
+#### W1603 - buffer built-in referenced 
+Used when the buffer built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## cmp-builtin 
+#### W1604 - cmp built-in referenced 
+Used when the cmp built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## coerce-builtin 
+#### W1605 - coerce built-in referenced 
+Used when the coerce built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## execfile-builtin 
+#### W1606 - execfile built-in referenced 
+Used when the execfile built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## file-builtin 
+#### W1607 - file built-in referenced 
+Used when the file built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## long-builtin 
+#### W1608 - long built-in referenced 
+Used when the long built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## raw_input-builtin 
+#### W1609 - raw_input built-in referenced 
+Used when the raw_input built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## reduce-builtin 
+#### W1610 - reduce built-in referenced 
+Used when the reduce built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## standarderror-builtin 
+#### W1611 - StandardError built-in referenced 
+Used when the StandardError built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## unicode-builtin 
+#### W1612 - unicode built-in referenced 
+Used when the unicode built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## xrange-builtin 
+#### W1613 - xrange built-in referenced 
+Used when the xrange built-in function is referenced (missing from Python 3) This message can't be emitted when using Python >= 3.0. 
+## coerce-method 
+#### W1614 - __coerce__ method defined 
+Used when a __coerce__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## delslice-method 
+#### W1615 - __delslice__ method defined 
+Used when a __delslice__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## getslice-method 
+#### W1616 - __getslice__ method defined 
+Used when a __getslice__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## setslice-method 
+#### W1617 - __setslice__ method defined 
+Used when a __setslice__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## no-absolute-import 
+#### W1618 - import missing `from __future__ import absolute_import` 
+Used when an import is not accompanied by ``from __future__ import absolute_import`` (default behaviour in Python 3) This message can't be emitted when using Python >= 3.0. 
+## old-division 
+#### W1619 - division w/o __future__ statement 
+Used for non-floor division w/o a float literal or ``from __future__ import division`` (Python 3 returns a float for int division unconditionally) This message can't be emitted when using Python >= 3.0. 
+## dict-iter-method 
+#### W1620 - Calling a dict.iter*() method 
+Used for calls to dict.iterkeys(), itervalues() or iteritems() (Python 3 lacks these methods) This message can't be emitted when using Python >= 3.0. 
+## dict-view-method 
+#### W1621 - Calling a dict.view*() method 
+Used for calls to dict.viewkeys(), viewvalues() or viewitems() (Python 3 lacks these methods) This message can't be emitted when using Python >= 3.0. 
+## next-method-called 
+#### W1622 - Called a next() method on an object 
+Used when an object's next() method is called (Python 3 uses the next() built- in function) This message can't be emitted when using Python >= 3.0. 
+## metaclass-assignment 
+#### W1623 - Assigning to a class's __metaclass__ attribute 
+Used when a metaclass is specified by assigning to __metaclass__ (Python 3 specifies the metaclass as a class statement argument) This message can't be emitted when using Python >= 3.0. 
+## indexing-exception 
+#### W1624 - Indexing exceptions will not work on Python 3 
+Indexing exceptions will not work on Python 3. Use `exception.args[index]` instead. This message can't be emitted when using Python >= 3.0. 
+## raising-string 
+#### W1625 - Raising a string exception 
+Used when a string exception is raised. This will not work on Python 3. This message can't be emitted when using Python >= 3.0. 
+## reload-builtin 
+#### W1626 - reload built-in referenced 
+Used when the reload built-in function is referenced (missing from Python 3). You can use instead imp.reload or importlib.reload. This message can't be emitted when using Python >= 3.0. 
+## oct-method 
+#### W1627 - __oct__ method defined 
+Used when a __oct__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## hex-method 
+#### W1628 - __hex__ method defined 
+Used when a __hex__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## nonzero-method 
+#### W1629 - __nonzero__ method defined 
+Used when a __nonzero__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## cmp-method 
+#### W1630 - __cmp__ method defined 
+Used when a __cmp__ method is defined (method is not used by Python 3) This message can't be emitted when using Python >= 3.0. 
+## input-builtin 
+#### W1632 - input built-in referenced 
+Used when the input built-in is referenced (backwards-incompatible semantics in Python 3) This message can't be emitted when using Python >= 3.0. 
+## round-builtin 
+#### W1633 - round built-in referenced 
+Used when the round built-in is referenced (backwards-incompatible semantics in Python 3) This message can't be emitted when using Python >= 3.0. 
+## intern-builtin 
+#### W1634 - intern built-in referenced 
+Used when the intern built-in is referenced (Moved to sys.intern in Python 3) This message can't be emitted when using Python >= 3.0. 
+## unichr-builtin 
+#### W1635 - unichr built-in referenced 
+Used when the unichr built-in is referenced (Use chr in Python 3) This message can't be emitted when using Python >= 3.0. 
+## map-builtin-not-iterating 
+#### W1636 - map built-in referenced when not iterating 
+Used when the map built-in is referenced in a non-iterating context (returns an iterator in Python 3) This message can't be emitted when using Python >= 3.0. 
+## zip-builtin-not-iterating 
+#### W1637 - zip built-in referenced when not iterating 
+Used when the zip built-in is referenced in a non-iterating context (returns an iterator in Python 3) This message can't be emitted when using Python >= 3.0. 
+## range-builtin-not-iterating 
+#### W1638 - range built-in referenced when not iterating 
+Used when the range built-in is referenced in a non-iterating context (returns an iterator in Python 3) This message can't be emitted when using Python >= 3.0. 
+## filter-builtin-not-iterating 
+#### W1639 - filter built-in referenced when not iterating 
+Used when the filter built-in is referenced in a non-iterating context (returns an iterator in Python 3) This message can't be emitted when using Python >= 3.0. 
+## using-cmp-argument 
+#### W1640 - Using the cmp argument for list.sort / sorted 
+Using the cmp argument for list.sort or the sorted builtin should be avoided, since it was removed in Python 3. Using either `key` or `functools.cmp_to_key` should be preferred. This message can't be emitted when using Python >= 3.0.  
