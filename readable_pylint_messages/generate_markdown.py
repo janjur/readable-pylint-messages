@@ -76,7 +76,7 @@ def prepare_readme(messages):
     :return: formatted markdown string
     """
     markdown = "# Readable pylint messages \n"
-    markdown += "Goal of the repo is to prepare and present README with list of messages. Sorry for lame commit messages.\n"
+    markdown += "Goal of the repo is to prepare and present README with list of messages.\n"
     markdown += "Prepared with `pylint --list-msgs` for pylint v{}\n".format(get_pylint_version())
     for message in messages:
         markdown += "## {} \n".format(message.name)
